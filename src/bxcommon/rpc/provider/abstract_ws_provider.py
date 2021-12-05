@@ -92,6 +92,7 @@ class AbstractWsProvider(AbstractProvider, metaclass=ABCMeta):
             # pylint: disable=broad-except
             except Exception as e:
                 logger.error(log_messages.WS_UNEXPECTED_ERROR, e)
+                raise e
             else:
                 break
 
