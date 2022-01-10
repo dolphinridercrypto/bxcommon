@@ -121,7 +121,6 @@ class AbstractWsProvider(AbstractProvider, metaclass=ABCMeta):
             self.listener_task = asyncio.create_task(self.receive())
 
     async def connect_websocket(self) -> websockets.WebSocketClientProtocol:
-        print("Reached connect_websocket in AbstractWsProvider!")
         return await websockets.connect(self.uri, extra_headers=self.headers, max_size=2**24, close_timeout=0)
 
     @abstractmethod
@@ -351,15 +350,13 @@ class AbstractWsProvider(AbstractProvider, metaclass=ABCMeta):
     async def close(self) -> None:
         logger.trace("Closing websockets provider")
 
-        print("Reached the websocket close!!!")
         self.running = False
 
         ws = self.ws
-        print("Beginning the wait...")
         if ws is not None:
             await ws.close()
             await ws.wait_closed()
-        print("Finished the close wait!!!")
+            
         listener = self.listener_task
         if listener is not None:
             listener.cancel()
