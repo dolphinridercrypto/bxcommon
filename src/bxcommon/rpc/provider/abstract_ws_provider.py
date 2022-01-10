@@ -73,6 +73,7 @@ class AbstractWsProvider(AbstractProvider, metaclass=ABCMeta):
                     self.connect_websocket(), constants.WS_MAX_CONNECTION_TIMEOUT_S
                 )
             except (asyncio.TimeoutError, ConnectionRefusedError) as e:
+                print("Reached the first exception block for websockets!")
                 # immediately raise an error if this is the first attempt,
                 # or not attempting to retry connections
                 if not self.retry_connection or not self.running:
@@ -92,9 +93,11 @@ class AbstractWsProvider(AbstractProvider, metaclass=ABCMeta):
                     break
             # pylint: disable=broad-except
             except Exception as e:
+                print("Reached the general exception block for websockets!")
                 logger.error(log_messages.WS_UNEXPECTED_ERROR, e)
                 raise e
             else:
+                print("Reached the else for websockets!")
                 break
 
             connection_attempts = min(connection_attempts, len(constants.WS_RECONNECT_TIMEOUTS) - 1)
