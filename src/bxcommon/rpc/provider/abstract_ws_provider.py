@@ -122,7 +122,7 @@ class AbstractWsProvider(AbstractProvider, metaclass=ABCMeta):
 
     async def connect_websocket(self) -> websockets.WebSocketClientProtocol:
         print("Connecting websocket...")
-        return await websockets.connect(self.uri, extra_headers=self.headers, max_size=2**24, close_timeout=1)
+        return await websockets.connect(self.uri, extra_headers=self.headers, max_size=2**24, close_timeout=0)
 
     @abstractmethod
     async def subscribe(self, channel: str, options: Optional[Dict[str, Any]] = None) -> str:
