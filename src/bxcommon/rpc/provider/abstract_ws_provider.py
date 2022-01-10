@@ -346,6 +346,7 @@ class AbstractWsProvider(AbstractProvider, metaclass=ABCMeta):
     async def close(self) -> None:
         logger.trace("Closing websockets provider")
 
+        print("Reached the websocket close!!!")
         self.running = False
 
         ws = self.ws
