@@ -350,10 +350,11 @@ class AbstractWsProvider(AbstractProvider, metaclass=ABCMeta):
         self.running = False
 
         ws = self.ws
+        print("Beginning the wait...")
         if ws is not None:
             await ws.close()
             await ws.wait_closed()
-
+        print("Finished the close wait!!!")
         listener = self.listener_task
         if listener is not None:
             listener.cancel()
