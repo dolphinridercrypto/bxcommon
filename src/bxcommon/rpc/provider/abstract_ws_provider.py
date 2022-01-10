@@ -68,6 +68,7 @@ class AbstractWsProvider(AbstractProvider, metaclass=ABCMeta):
             self.ws = None
 
             try:
+                print("Creating websocket obj...")
                 self.ws = await asyncio.wait_for(
                     self.connect_websocket(), constants.WS_MAX_CONNECTION_TIMEOUT_S
                 )
@@ -117,7 +118,7 @@ class AbstractWsProvider(AbstractProvider, metaclass=ABCMeta):
             self.listener_task = asyncio.create_task(self.receive())
 
     async def connect_websocket(self) -> websockets.WebSocketClientProtocol:
-        print("Connecting websocket!")
+        print("Connecting websocket...")
         return await websockets.connect(self.uri, extra_headers=self.headers, max_size=2**24, close_timeout=1)
 
     @abstractmethod
