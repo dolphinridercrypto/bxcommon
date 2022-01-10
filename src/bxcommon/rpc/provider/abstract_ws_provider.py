@@ -349,18 +349,18 @@ class AbstractWsProvider(AbstractProvider, metaclass=ABCMeta):
         print("Reached the websocket close!!!")
         self.running = False
 
-        ws = self.ws
-        print("Beginning the wait...")
-        if ws is not None:
-            await ws.close()
-            await ws.wait_closed()
-        print("Finished the close wait!!!")
-        listener = self.listener_task
-        if listener is not None:
-            listener.cancel()
+        #ws = self.ws
+        #print("Beginning the wait...")
+        #f ws is not None:
+        #    await ws.close()
+        #    await ws.wait_closed()
+        #print("Finished the close wait!!!")
+        #listener = self.listener_task
+        #if listener is not None:
+        #    listener.cancel()
 
-        ws_status_check = self.ws_status_check
-        if ws_status_check is not None:
-            ws_status_check.cancel()
+       # ws_status_check = self.ws_status_check
+        #if ws_status_check is not None:
+        #    ws_status_check.cancel()
 
-        self.connected_event.set()
+        #self.connected_event.set()
