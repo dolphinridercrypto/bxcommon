@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from enum import Enum
+from functools import total_ordering
 from typing import Optional
 from datetime import datetime, date
 
@@ -6,13 +8,59 @@ from bxcommon.models.bdn_service_model_config_base import (
     BdnBasicServiceModel,
     BdnQuotaServiceModelConfigBase,
     BdnFeedServiceModelConfigBase, BdnPrivateRelayServiceModelConfigBase,
-)
+    BdnLightGatewayServiceModelConfigBase)
 from bxcommon import constants
 from bxcommon.rpc import rpc_constants
 from bxutils import logging
 
 logger = logging.get_logger(__name__)
 OPTIONAL_ACCOUNT_SERVICES = {"tx_free"}
+
+
+@total_ordering
+class Tiers(Enum):
+    INTRODUCTORY = "Introductory"
+    DEVELOPER = "Developer"
+    PROFESSIONAL = "Professional"
+    ENTERPRISE = "Enterprise"
+    ENTERPRISE_ELITE = "EnterpriseElite"
+
+    def __eq__(self, other):
+        if not isinstance(other, Tiers):
+            return NotImplemented
+
+        # pylint: disable=comparison-with-callable
+        return self.value == other.value
+
+    def __hash__(self):
+        return id(self)
+
+    def __lt__(self, other):
+        if not isinstance(other, Tiers):
+            return NotImplemented
+
+        order = [
+            Tiers.INTRODUCTORY,
+            Tiers.DEVELOPER,
+            Tiers.PROFESSIONAL,
+            Tiers.ENTERPRISE,
+            Tiers.ENTERPRISE_ELITE
+        ]
+
+        return order.index(self) < order.index(other)
+
+    def __gt__(self, other):
+        return not self.__lt__(other)
+
+    def __ge__(self, other):
+        return self.__gt__(other) or self.__eq__(other)
+
+    @classmethod
+    def from_string(cls, value: str) -> Optional["Tiers"]:
+        try:
+            return Tiers(value)
+        except ValueError:
+            return None
 
 
 @dataclass
@@ -45,7 +93,8 @@ class AccountTemplate:
     private_relays: Optional[BdnPrivateRelayServiceModelConfigBase] = None
     private_transaction: Optional[BdnQuotaServiceModelConfigBase] = None
     private_transaction_fee: Optional[BdnQuotaServiceModelConfigBase] = None
-    light_gateway: Optional[BdnBasicServiceModel] = None
+    light_gateway: Optional[BdnLightGatewayServiceModelConfigBase] = None
+    online_gateways: Optional[BdnQuotaServiceModelConfigBase] = None
 
 
 @dataclass

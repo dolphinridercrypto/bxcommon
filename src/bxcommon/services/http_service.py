@@ -2,6 +2,7 @@ import json
 from ssl import SSLContext
 from typing import Optional, Dict, Any, Union, List
 
+import ast
 import status
 from urllib3 import Retry, HTTPResponse
 from urllib3.exceptions import HTTPError, MaxRetryError
@@ -106,7 +107,7 @@ def build_url(endpoint: str) -> str:
 
 def raise_for_status(res: HTTPResponse) -> None:
     if status.is_client_error(res.status) or status.is_server_error(res.status):
-        raise HTTPError(f"{res.status}:{res.reason}")
+        raise HTTPError(f"{res.status}:{res.reason}. {ast.literal_eval(res.data.decode('utf-8'))}")
 
 
 def _http_request(
