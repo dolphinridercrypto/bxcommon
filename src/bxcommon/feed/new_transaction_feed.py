@@ -55,7 +55,6 @@ class NewTransactionFeed(Feed[RawTransactionFeedEntry, RawTransaction]):
     def subscribe(
         self, options: Dict[str, Any]
     ) -> Subscriber[RawTransactionFeedEntry]:
-        print("I am here!")
         include_from_blockchain = options.get("include_from_blockchain", None)
         if include_from_blockchain is not None:
             if not isinstance(include_from_blockchain, bool):
